@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anshul Mehta — Cyber Operative</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Exo+2:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold: #c8a45a;
+  --gold-light: #e8c87a;
+  --gold-dim: rgba(200,164,90,0.18);
+  --azure: #4fc3f7;
+  --azure-dim: rgba(79,195,247,0.15);
+  --teal: #26c6da;
+  --violet: #9b7fd4;
+  --rose: #f06292;
+  --bg: #06080e;
+  --bg2: #0b0e1a;
+  --bg3: #101525;
+  --panel: rgba(11,14,26,0.95);
+  --border: rgba(200,164,90,0.2);
+  --border-bright: rgba(200,164,90,0.5);
+  --text: #ccd8ec;
+  --text-muted: #6a7a90;
+  --glow-gold: 0 0 18px rgba(200,164,90,0.35), 0 0 50px rgba(200,164,90,0.12);
+  --glow-azure: 0 0 18px rgba(79,195,247,0.35), 0 0 50px rgba(79,195,247,0.12);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Exo 2', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+/* STAR FIELD */
+#stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.star { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--dur,3s) ease-in-out infinite; }
+@keyframes twinkle { 0%,100%{opacity:var(--min,.08)} 50%{opacity:var(--max,.7)} }
+
+/* AMBIENT GLOW ORBS */
+.orb { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); }
+.orb-1 { width: 500px; height: 500px; top: -100px; left: -100px; background: radial-gradient(circle, rgba(200,164,90,0.06), transparent 70%); }
+.orb-2 { width: 400px; height: 400px; bottom: 20%; right: -80px; background: radial-gradient(circle, rgba(79,195,247,0.06), transparent 70%); }
+.orb-3 { width: 350px; height: 350px; top: 50%; left: 40%; background: radial-gradient(circle, rgba(155,127,212,0.04), transparent 70%); }
+
+/* SCANLINES */
+body::after { content:''; position:fixed; inset:0; background: repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px); pointer-events:none; z-index:9998; }
+
+/* GRID */
+#grid { position:fixed; inset:0; pointer-events:none; z-index:0; background-image: linear-gradient(rgba(200,164,90,0.02) 1px,transparent 1px), linear-gradient(90deg,rgba(200,164,90,0.02) 1px,transparent 1px); background-size:60px 60px; }
+
+/* NAV */
+nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.85rem 3rem;
+  background: rgba(6,8,14,0.88);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-family:'Cinzel',serif; font-size:0.95rem; color:var(--gold); letter-spacing:3px; text-shadow:var(--glow-gold); }
+.nav-logo sup { font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:var(--text-muted); letter-spacing:1px; margin-left:0.5rem; vertical-align:middle; }
+.nav-links { display:flex; gap:0.2rem; }
+.nav-links a {
+  font-family:'Share Tech Mono',monospace; font-size:0.68rem; letter-spacing:2px; text-transform:uppercase;
+  color:var(--text-muted); text-decoration:none; padding:0.4rem 0.85rem;
+  border:1px solid transparent; transition:all 0.3s;
+  clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+}
+.nav-links a:hover, .nav-links a.active { color:var(--gold); border-color:var(--border); background:var(--gold-dim); text-shadow:var(--glow-gold); }
+
+/* HERO */
+#hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:6rem 2rem 4rem; position:relative; z-index:1; text-align:center; }
+
+.hero-tag { font-family:'Share Tech Mono',monospace; font-size:0.72rem; letter-spacing:5px; color:var(--azure); text-transform:uppercase; margin-bottom:1.2rem; animation:fadeUp 0.7s ease both; text-shadow:var(--glow-azure); }
+
+.hero-name { font-family:'Cinzel',serif; font-size:clamp(3rem,8vw,6rem); font-weight:700; letter-spacing:4px; line-height:1; color:#fff; animation:fadeUp 0.8s ease both 0.1s; margin-bottom:0.3rem; }
+.hero-name .gold { color:var(--gold); text-shadow:var(--glow-gold); }
+
+.hero-role { font-family:'Cinzel',serif; font-size:clamp(0.8rem,1.8vw,1.1rem); color:var(--gold-light); letter-spacing:5px; text-transform:uppercase; margin-bottom:1.8rem; animation:fadeUp 0.8s ease both 0.15s; opacity:0.75; }
+
+.hero-divider { display:flex; align-items:center; gap:1rem; margin:0.5rem 0 1.8rem; animation:fadeUp 0.8s ease both 0.2s; }
+.hero-divider::before, .hero-divider::after { content:''; flex:1; max-width:100px; height:1px; }
+.hero-divider::before { background:linear-gradient(90deg,transparent,var(--gold)); }
+.hero-divider::after { background:linear-gradient(90deg,var(--gold),transparent); }
+.hero-divider span { color:var(--gold); font-size:0.9rem; }
+
+.hero-desc { font-size:0.97rem; color:var(--text-muted); max-width:540px; line-height:1.9; margin-bottom:2.5rem; animation:fadeUp 0.8s ease both 0.25s; }
+
+.hero-stats { display:flex; border:1px solid var(--border); margin-bottom:2.5rem; animation:fadeUp 0.8s ease both 0.3s; }
+.hero-stat { padding:0.9rem 1.8rem; border-right:1px solid var(--border); background:var(--panel); transition:background 0.3s; text-align:center; }
+.hero-stat:last-child { border-right:none; }
+.hero-stat:hover { background:var(--gold-dim); }
+.hero-stat-val { font-family:'Cinzel',serif; font-size:1.3rem; color:var(--gold); font-weight:600; }
+.hero-stat-lbl { font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:var(--text-muted); letter-spacing:2px; text-transform:uppercase; margin-top:0.15rem; }
+
+.hero-btns { display:flex; gap:1rem; animation:fadeUp 0.8s ease both 0.35s; }
+.btn-primary {
+  font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase;
+  padding:0.85rem 2rem; background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:#06080e; font-weight:700; text-decoration:none; border:none; cursor:pointer;
+  clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+  transition:all 0.3s; box-shadow:var(--glow-gold);
+}
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 28px rgba(200,164,90,0.55),0 0 70px rgba(200,164,90,0.2); }
+.btn-ghost {
+  font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase;
+  padding:0.85rem 2rem; background:transparent; color:var(--gold);
+  border:1px solid rgba(200,164,90,0.5); text-decoration:none; cursor:pointer;
+  clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);
+  transition:all 0.3s;
+}
+.btn-ghost:hover { background:var(--gold-dim); box-shadow:var(--glow-gold); }
+
+/* SECTION CHROME */
+.section { position:relative; z-index:1; max-width:1140px; margin:0 auto; padding:6rem 2rem; }
+.sec-head { display:flex; align-items:center; gap:1rem; margin-bottom:3.5rem; }
+.sec-num { font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--gold); letter-spacing:3px; }
+.sec-gem { color:var(--gold); font-size:0.55rem; flex-shrink:0; }
+.sec-title { font-family:'Cinzel',serif; font-size:clamp(1.3rem,3vw,2rem); color:#fff; letter-spacing:3px; font-weight:600; }
+.sec-line { flex:1; height:1px; background:linear-gradient(90deg,var(--border-bright),transparent); }
+
+/* CORNER ORNAMENTS */
+.co { position:absolute; width:22px; height:22px; border-color:var(--gold); border-style:solid; opacity:0.4; pointer-events:none; }
+.co-tl { top:0; left:0; border-width:1px 0 0 1px; }
+.co-tr { top:0; right:0; border-width:1px 1px 0 0; }
+.co-bl { bottom:0; left:0; border-width:0 0 1px 1px; }
+.co-br { bottom:0; right:0; border-width:0 1px 1px 0; }
+
+/* ABOUT */
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:start; }
+.about-body p { color:var(--text-muted); line-height:1.9; margin-bottom:0.9rem; font-size:0.97rem; }
+.about-body p strong { color:var(--gold-light); font-weight:500; }
+.about-quote {
+  border-left:2px solid var(--gold); padding:0.8rem 1.2rem; margin:1.5rem 0;
+  font-family:'Cinzel',serif; font-size:0.92rem; color:var(--gold-light);
+  font-style:italic; background:var(--gold-dim); line-height:1.6;
+}
+
+.profile-panel {
+  background:var(--panel); border:1px solid var(--border); position:relative; overflow:hidden;
+}
+.profile-panel::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--azure),var(--gold)); }
+.profile-panel-inner { padding:1.8rem; }
+.pp-title {
+  font-family:'Cinzel',serif; font-size:0.72rem; color:var(--gold); letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:1.4rem; display:flex; align-items:center; gap:0.6rem;
+}
+.pp-title::after { content:''; flex:1; height:1px; background:var(--border); }
+.pp-row { display:grid; grid-template-columns:110px 1fr; gap:0.8rem; align-items:start; padding:0.6rem 0; border-bottom:1px solid rgba(200,164,90,0.07); }
+.pp-row:last-of-type { border-bottom:none; }
+.pp-key { font-family:'Share Tech Mono',monospace; font-size:0.62rem; color:var(--text-muted); letter-spacing:2px; text-transform:uppercase; padding-top:0.1rem; }
+.pp-val { font-size:0.88rem; color:var(--text); line-height:1.5; }
+.avail-badge { display:inline-flex; align-items:center; gap:0.5rem; font-family:'Share Tech Mono',monospace; font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; color:#6ee7b7; padding:0.3rem 0.8rem; border:1px solid rgba(110,231,183,0.3); background:rgba(110,231,183,0.05); margin-top:1.2rem; }
+.avail-badge::before { content:''; width:5px; height:5px; border-radius:50%; background:#6ee7b7; box-shadow:0 0 7px #6ee7b7; animation:pulse 2s infinite; }
+
+/* SKILLS */
+#skills-section { background:linear-gradient(180deg,transparent,rgba(200,164,90,0.025) 50%,transparent); }
+.skills-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+.sk-card {
+  background:var(--panel); border:1px solid var(--border); padding:1.5rem;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+  transition:all 0.3s; position:relative; overflow:hidden;
+}
+.sk-card:hover { border-color:var(--gold); box-shadow:var(--glow-gold); transform:translateY(-3px); background:rgba(200,164,90,0.05); }
+.sk-icon { font-size:1.4rem; margin-bottom:0.7rem; }
+.sk-name { font-family:'Cinzel',serif; font-size:0.75rem; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:0.8rem; font-weight:600; }
+.sk-tags { display:flex; flex-wrap:wrap; gap:0.35rem; }
+.sk-tag { font-family:'Share Tech Mono',monospace; font-size:0.62rem; letter-spacing:1px; padding:0.22rem 0.55rem; border:1px solid rgba(200,164,90,0.18); color:var(--text-muted); background:rgba(200,164,90,0.03); transition:all 0.2s; }
+.sk-tag:hover { border-color:var(--gold); color:var(--gold-light); }
+.sk-tag.learning { border-color:rgba(79,195,247,0.25); color:var(--azure); background:rgba(79,195,247,0.04); }
+
+/* PROJECTS */
+.proj-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; }
+.proj-card {
+  background:var(--panel); border:1px solid var(--border); padding:1.7rem;
+  position:relative; overflow:hidden; transition:all 0.3s;
+}
+.proj-card::before { content:''; position:absolute; top:0; left:0; width:100%; height:2px; background:linear-gradient(90deg,var(--gold),transparent); opacity:0; transition:opacity 0.3s; }
+.proj-card:hover { border-color:rgba(200,164,90,0.42); transform:translateY(-3px); box-shadow:0 8px 40px rgba(200,164,90,0.08); }
+.proj-card:hover::before { opacity:1; }
+
+.proj-type { font-family:'Share Tech Mono',monospace; font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; color:var(--azure); margin-bottom:0.55rem; display:flex; align-items:center; gap:0.4rem; }
+.proj-type::before { content:'◆'; font-size:0.4rem; }
+.proj-name { font-family:'Cinzel',serif; font-size:1rem; color:#fff; font-weight:600; margin-bottom:0.6rem; letter-spacing:0.5px; line-height:1.3; }
+.proj-desc { font-size:0.87rem; color:var(--text-muted); line-height:1.75; margin-bottom:1.1rem; }
+.proj-tools { display:flex; flex-wrap:wrap; gap:0.35rem; margin-bottom:1rem; }
+.proj-tool { font-family:'Share Tech Mono',monospace; font-size:0.6rem; letter-spacing:1px; padding:0.2rem 0.5rem; border:1px solid rgba(38,198,218,0.25); color:var(--teal); background:rgba(38,198,218,0.04); }
+.proj-link { font-family:'Share Tech Mono',monospace; font-size:0.68rem; letter-spacing:2px; color:var(--gold); text-decoration:none; display:inline-flex; align-items:center; gap:0.35rem; opacity:0.65; transition:opacity 0.2s; }
+.proj-link:hover { opacity:1; }
+.proj-link::before { content:'→'; }
+
+/* HIGHLIGHT BADGE */
+.proj-badge { position:absolute; top:1rem; right:1rem; font-family:'Share Tech Mono',monospace; font-size:0.58rem; letter-spacing:2px; text-transform:uppercase; padding:0.18rem 0.55rem; border:1px solid rgba(200,164,90,0.3); color:var(--gold); background:rgba(200,164,90,0.07); }
+
+/* CERTS */
+.certs-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+.cert-card {
+  background:var(--panel); border:1px solid var(--border); padding:1.5rem;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%);
+  transition:all 0.3s; position:relative; overflow:hidden;
+}
+.cert-card:hover { border-color:var(--gold); box-shadow:var(--glow-gold); }
+.cert-stars { font-size:0.75rem; margin-bottom:0.7rem; letter-spacing:2px; }
+.cert-rarity { font-family:'Share Tech Mono',monospace; font-size:0.6rem; letter-spacing:2px; text-transform:uppercase; padding:0.18rem 0.55rem; display:inline-block; border:1px solid; margin-bottom:0.8rem; }
+.rarity-5 { color:var(--gold); border-color:rgba(200,164,90,0.45); background:rgba(200,164,90,0.06); }
+.rarity-4 { color:var(--violet); border-color:rgba(155,127,212,0.45); background:rgba(155,127,212,0.06); }
+.rarity-3 { color:var(--azure); border-color:rgba(79,195,247,0.35); background:rgba(79,195,247,0.05); }
+.rarity-ex { color:#6ee7b7; border-color:rgba(110,231,183,0.35); background:rgba(110,231,183,0.05); }
+.cert-name { font-family:'Cinzel',serif; font-size:0.92rem; color:#fff; font-weight:600; line-height:1.3; margin-bottom:0.3rem; }
+.cert-org { font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--text-muted); letter-spacing:1px; line-height:1.5; }
+
+/* CONTACT */
+#contact-section { background:linear-gradient(180deg,transparent,rgba(79,195,247,0.025) 50%,transparent); }
+.contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; }
+.contact-head h3 { font-family:'Cinzel',serif; font-size:1.2rem; color:var(--gold-light); letter-spacing:2px; margin-bottom:0.8rem; text-shadow:var(--glow-gold); }
+.contact-head p { color:var(--text-muted); line-height:1.85; margin-bottom:1.5rem; font-size:0.95rem; }
+.contact-links { display:flex; flex-direction:column; gap:0.6rem; }
+.c-link { font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:1px; color:var(--text-muted); text-decoration:none; display:flex; align-items:center; gap:0.8rem; padding:0.75rem 1.1rem; border:1px solid var(--border); background:var(--panel); transition:all 0.3s; }
+.c-link:hover { border-color:var(--gold); color:var(--gold-light); background:var(--gold-dim); padding-left:1.7rem; }
+.contact-form { display:flex; flex-direction:column; gap:0.9rem; }
+.f-group { display:flex; flex-direction:column; gap:0.35rem; }
+.f-group label { font-family:'Share Tech Mono',monospace; font-size:0.62rem; color:var(--gold); letter-spacing:3px; text-transform:uppercase; }
+.f-group input, .f-group textarea { background:var(--bg3); border:1px solid var(--border); color:var(--text); font-family:'Share Tech Mono',monospace; font-size:0.82rem; padding:0.75rem 0.9rem; outline:none; resize:vertical; transition:border-color 0.3s; }
+.f-group input:focus, .f-group textarea:focus { border-color:var(--gold); box-shadow:0 0 10px rgba(200,164,90,0.12); }
+.f-group textarea { min-height:95px; }
+.btn-send { font-family:'Share Tech Mono',monospace; font-size:0.75rem; letter-spacing:3px; text-transform:uppercase; padding:0.85rem; background:linear-gradient(135deg,var(--gold),var(--gold-light)); color:#06080e; font-weight:700; border:none; cursor:pointer; clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%); transition:all 0.3s; box-shadow:var(--glow-gold); }
+.btn-send:hover { transform:translateY(-2px); box-shadow:0 0 28px rgba(200,164,90,0.5); }
+
+/* FOOTER */
+footer { position:relative; z-index:1; text-align:center; padding:1.8rem; border-top:1px solid var(--border); font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--text-muted); letter-spacing:2px; }
+footer span { color:var(--gold); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+.reveal { opacity:0; transform:translateY(26px); transition:opacity 0.65s ease, transform 0.65s ease; }
+.reveal.visible { opacity:1; transform:none; }
+.d1 { transition-delay:0.1s; } .d2 { transition-delay:0.2s; } .d3 { transition-delay:0.3s; }
+
+/* RESPONSIVE */
+@media(max-width:800px){
+  nav { padding:0.8rem 1rem; }
+  .nav-links a { padding:0.3rem 0.45rem; font-size:0.58rem; }
+  .about-grid,.contact-grid { grid-template-columns:1fr; gap:2rem; }
+  .skills-grid { grid-template-columns:1fr 1fr; }
+  .proj-grid { grid-template-columns:1fr; }
+  .certs-grid { grid-template-columns:1fr 1fr; }
+  .section { padding:4rem 1.2rem; }
+  .hero-stats { flex-wrap:wrap; }
+}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+<div id="grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">ANSHUL MEHTA <sup>// CYBER OPERATIVE</sup></div>
+  <div class="nav-links">
+    <a href="#about">Profile</a>
+    <a href="#skills">Abilities</a>
+    <a href="#projects">Missions</a>
+    <a href="#certs">Ranks</a>
+    <a href="#contact">Dispatch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-tag">◈ Operative Identification Confirmed ◈</div>
+  <h1 class="hero-name"><span class="gold">ANSHUL</span> MEHTA</h1>
+  <div class="hero-role">Cybersecurity Analyst · Threat Investigator</div>
+  <div class="hero-divider"><span>✦</span></div>
+  <p class="hero-desc">
+    BCA graduate from Uttarakhand, India. Trained across 9 real hands-on missions — from responding to credential stuffing attacks and DDoS incidents, to hunting file hash IOCs with VirusTotal, hardening Linux permissions, and automating access control with Python.
+  </p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-val">9</div><div class="hero-stat-lbl">Missions</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">9/9</div><div class="hero-stat-lbl">Google Cert</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">2</div><div class="hero-stat-lbl">Certificates</div></div>
+    <div class="hero-stat"><div class="hero-stat-val">BCA</div><div class="hero-stat-lbl">Degree</div></div>
+  </div>
+  <div class="hero-btns">
+    <a href="#projects" class="btn-primary">View Missions</a>
+    <a href="#contact" class="btn-ghost">Send Dispatch</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span><span class="sec-gem">◆</span>
+      <h2 class="sec-title">OPERATIVE PROFILE</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <div class="about-quote">"I am committed to protecting sensitive data and digital systems, and I continuously enhance my technical skills through hands-on learning and practical experience."</div>
+        <p>I'm <strong>Anshul Mehta</strong>, a BCA graduate from Uttarakhand, India, with core strengths in <strong>integrity, persistence, and a strong willingness to learn</strong>. My goal is to help organisations safeguard their systems and mitigate threats from evolving cyber risks.</p>
+        <p>My training is genuinely hands-on — I've investigated real credential stuffing campaigns, analysed DDoS incidents mapped to the <strong>NIST CSF framework</strong>, hunted malicious file hashes in VirusTotal, hardened Linux file permissions with chmod, and automated access control lists with Python.</p>
+        <p>Currently completing the <strong>Google Cybersecurity Specialization</strong> (9 of 9 courses done) and building more capabilities through <strong>TryHackMe free labs</strong> daily.</p>
+      </div>
+      <div class="profile-panel reveal d1">
+        <div class="co co-tl"></div><div class="co co-tr"></div>
+        <div class="co co-bl"></div><div class="co co-br"></div>
+        <div class="profile-panel-inner">
+          <div class="pp-title">Operative Data</div>
+          <div class="pp-row"><span class="pp-key">Name</span><span class="pp-val">Anshul Mehta</span></div>
+          <div class="pp-row"><span class="pp-key">Class</span><span class="pp-val">Cybersecurity Analyst</span></div>
+          <div class="pp-row"><span class="pp-key">Base</span><span class="pp-val">Uttarakhand, India</span></div>
+          <div class="pp-row"><span class="pp-key">Degree</span><span class="pp-val">BCA — Computer Applications</span></div>
+          <div class="pp-row"><span class="pp-key">Training</span><span class="pp-val">Google (9/9) · RCPL · TryHackMe</span></div>
+          <div class="pp-row"><span class="pp-key">GitHub</span><span class="pp-val">github.com/Anshul-debug</span></div>
+          <div class="pp-row"><span class="pp-key">Future</span><span class="pp-val">Exploring MSc Cybersecurity, AU</span></div>
+          <div class="avail-badge">Available for Deployment</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="background:linear-gradient(180deg,transparent,rgba(200,164,90,0.025) 50%,transparent);">
+  <div class="section">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span><span class="sec-gem">◆</span>
+      <h2 class="sec-title">ABILITIES & EQUIPMENT</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="sk-card reveal"><div class="sk-icon">🐍</div><div class="sk-name">Scripting</div><div class="sk-tags"><span class="sk-tag">Python</span><span class="sk-tag">File I/O (.read .write)</span><span class="sk-tag">Algorithm Design</span><span class="sk-tag">Bash</span></div></div>
+      <div class="sk-card reveal d1"><div class="sk-icon">🗄️</div><div class="sk-name">SQL & Database</div><div class="sk-tags"><span class="sk-tag">MySQL</span><span class="sk-tag">WHERE / AND / OR / NOT</span><span class="sk-tag">LIKE / Wildcards</span><span class="sk-tag">Log Queries</span></div></div>
+      <div class="sk-card reveal d2"><div class="sk-icon">🐧</div><div class="sk-name">Linux</div><div class="sk-tags"><span class="sk-tag">chmod / chown</span><span class="sk-tag">ls -la</span><span class="sk-tag">File Permissions</span><span class="sk-tag">Ubuntu / Kali</span></div></div>
+      <div class="sk-card reveal"><div class="sk-icon">🛡️</div><div class="sk-name">Cyber Defence</div><div class="sk-tags"><span class="sk-tag">Incident Response</span><span class="sk-tag">Vuln Assessment</span><span class="sk-tag">NIST CSF</span><span class="sk-tag">Security Auditing</span></div></div>
+      <div class="sk-card reveal d1"><div class="sk-icon">🔍</div><div class="sk-name">Threat Intel</div><div class="sk-tags"><span class="sk-tag">VirusTotal</span><span class="sk-tag">IOC Analysis</span><span class="sk-tag">Hash Investigation</span><span class="sk-tag">IDS/SIEM Alerts</span></div></div>
+      <div class="sk-card reveal d2"><div class="sk-icon">📡</div><div class="sk-name">Unlocking</div><div class="sk-tags"><span class="sk-tag learning">Wireshark</span><span class="sk-tag learning">tcpdump</span><span class="sk-tag learning">Splunk / SIEM</span><span class="sk-tag learning">MITRE ATT&CK</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS / MISSIONS -->
+<section id="projects" style="background:transparent;">
+  <div class="section">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span><span class="sec-gem">◆</span>
+      <h2 class="sec-title">COMPLETED MISSIONS</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="proj-grid">
+
+      <!-- M1: Incident Handler's Journal -->
+      <div class="proj-card reveal">
+        <div class="proj-badge">Real Incident</div>
+        <div class="proj-type">Incident Response</div>
+        <div class="proj-name">Incident Handler's Journal</div>
+        <p class="proj-desc">Documented a live credential stuffing attack on a production web server (prod-web-01) detected via IDS alerts and SIEM correlation at 14:20 IST. Recorded the full timeline — from initial alert to account isolation — with IOCs including malicious source IPs (185.220.101.45, 91.198.174.192), forensic artifacts (memory dump, disk image), and a 7-step remediation plan including MFA rollout and WAF rule updates.</p>
+        <div class="proj-tools"><span class="proj-tool">IDS / SIEM</span><span class="proj-tool">IOC Documentation</span><span class="proj-tool">Forensic Collection</span><span class="proj-tool">Incident Timeline</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/01_Incident_Handlers_Journal.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M2: Incident Report Analysis -->
+      <div class="proj-card reveal d1">
+        <div class="proj-badge">NIST CSF</div>
+        <div class="proj-type">Incident Report Analysis</div>
+        <div class="proj-name">DDoS Incident Report — NIST CSF Analysis</div>
+        <p class="proj-desc">Analysed a DDoS attack in which all network services were knocked offline by an ICMP flood. Applied the full NIST Cybersecurity Framework — Identify (internal network scope), Protect (firewall rate-limiting + IDS/IPS deployment), Detect (source IP verification + traffic monitoring), Respond (system isolation + log analysis), and Recover (staged service restoration) — producing a structured five-function incident report.</p>
+        <div class="proj-tools"><span class="proj-tool">NIST CSF</span><span class="proj-tool">DDoS / ICMP Flood</span><span class="proj-tool">Firewall Rules</span><span class="proj-tool">IDS/IPS</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/02_Incident_Report_Analysis.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M3: Network Portfolio -->
+      <div class="proj-card reveal">
+        <div class="proj-badge">4 Activities</div>
+        <div class="proj-type">Network Analysis Portfolio</div>
+        <div class="proj-name">Incident Response & Network Analysis</div>
+        <p class="proj-desc">Four-activity portfolio: (1) Ransomware incident response for a healthcare org — 5W analysis of a phishing-to-encryption kill chain. (2) PCAP analysis in Wireshark — packet inspection and malicious traffic identification. (3) Live traffic capture with tcpdump — CLI filtering and troubleshooting. (4) SHA-256 hash investigation in VirusTotal — confirmed malicious email attachment at a financial services SOC (alert at 1:20 p.m., triggered by phishing execution).</p>
+        <div class="proj-tools"><span class="proj-tool">Wireshark</span><span class="proj-tool">tcpdump</span><span class="proj-tool">VirusTotal</span><span class="proj-tool">SHA-256 Hash</span><span class="proj-tool">Ransomware IR</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/03_Network_Analysis_Portfolio.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M4: Linux Permissions -->
+      <div class="proj-card reveal d1">
+        <div class="proj-type">Linux Hardening</div>
+        <div class="proj-name">File Permissions in Linux</div>
+        <p class="proj-desc">Audited and hardened the <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">projects/</code> directory for a research team. Used <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">ls -la</code> to read 10-character permission strings across 5 project files, 1 hidden file (<code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">.project_x.txt</code>), and the <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">drafts/</code> directory. Applied chmod to remove world-write from project_k.txt, removed write access from archived .project_x.txt, and restricted execute on drafts/ to researcher2 only.</p>
+        <div class="proj-tools"><span class="proj-tool">chmod</span><span class="proj-tool">chown</span><span class="proj-tool">ls -la</span><span class="proj-tool">Linux Permissions</span><span class="proj-tool">Access Control</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/04_File_Permissions_Linux.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M5: SQL -->
+      <div class="proj-card reveal">
+        <div class="proj-type">SQL Security Investigation</div>
+        <div class="proj-name">Applying Filters to SQL Queries</div>
+        <p class="proj-desc">Investigated security incidents using SQL on two tables — <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">log_in_attempts</code> and <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">employees</code>. Queries included: after-hours failed logins (login_time &gt; 18:00 AND success = FALSE), login attempts on 2022-05-09/08, logins from outside Mexico using LIKE 'MEX%' with NOT, Marketing/East building employees (AND), Finance or Sales staff (OR), and all non-IT employees (NOT). Summary: six targeted queries covering AND, OR, NOT, LIKE, and wildcard operators.</p>
+        <div class="proj-tools"><span class="proj-tool">MySQL</span><span class="proj-tool">WHERE / AND / OR / NOT</span><span class="proj-tool">LIKE / Wildcards</span><span class="proj-tool">log_in_attempts table</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/05_SQL_Filters.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M6: Python -->
+      <div class="proj-card reveal d1">
+        <div class="proj-type">Python Automation</div>
+        <div class="proj-name">Update Files Through Python</div>
+        <p class="proj-desc">Built a complete Python algorithm to automate IP allow-list maintenance for <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">allow_list.txt</code>. Pipeline: open file with <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">with open()</code> in read mode → <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">.read()</code> to string → <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">.split()</code> to list → iterate <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">remove_list</code> with for loop → conditional <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">.remove()</code> → <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">.join("\n")</code> back to string → rewrite file with <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">open("w")</code> and <code style="font-family:Share Tech Mono,monospace;font-size:0.82em;color:var(--teal)">.write()</code>.</p>
+        <div class="proj-tools"><span class="proj-tool">Python</span><span class="proj-tool">File I/O</span><span class="proj-tool">.split() / .join()</span><span class="proj-tool">.remove()</span><span class="proj-tool">Access Control Automation</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/06_Python_Automation.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M7: Security Audit -->
+      <div class="proj-card reveal">
+        <div class="proj-badge">Risk Score 8/10</div>
+        <div class="proj-type">Security Audit · Compliance</div>
+        <div class="proj-name">Botium Toys — Internal Security Audit</div>
+        <p class="proj-desc">Conducted a full internal security audit for Botium Toys across PCI DSS, GDPR, and SOC 1/2 frameworks. Risk score: 8/10 due to lack of least privilege, no IDS, no disaster recovery plans, absent encryption for cardholder data, and weak password policies. Controls assessment identified gaps in 9 areas; compliance checklist confirmed non-adherence to PCI DSS (unencrypted card data, unrestricted employee access) and GDPR (unclassified assets, no encryption for EU customer data).</p>
+        <div class="proj-tools"><span class="proj-tool">PCI DSS</span><span class="proj-tool">GDPR</span><span class="proj-tool">SOC 1/2</span><span class="proj-tool">NIST CSF</span><span class="proj-tool">Controls Checklist</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/07_Security_Audit_Botium_Toys.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M8: Vulnerability Assessment -->
+      <div class="proj-card reveal d1">
+        <div class="proj-type">Risk Assessment</div>
+        <div class="proj-name">Vulnerability Assessment Report</div>
+        <p class="proj-desc">Assessed a Linux-based MySQL server (128GB RAM, IPv4, SSL/TLS) under NIST SP 800-30 Rev. 1. Risk table: Hacker exfiltration (likelihood 3 × severity 3 = Risk 9), Employee disruption (2×3 = 6), Customer data alteration (1×3 = 3). Remediation strategy: strong passwords + RBAC + MFA, TLS over SSL for data in motion, and IP allow-listing restricted to corporate offices to block internet-facing access to the database.</p>
+        <div class="proj-tools"><span class="proj-tool">NIST SP 800-30</span><span class="proj-tool">Risk Scoring</span><span class="proj-tool">MySQL / Linux</span><span class="proj-tool">TLS / RBAC / MFA</span></div>
+        <a href="https://github.com/Anshul-debug/Anshul-debug.github.io/blob/main/projects/08_Vulnerability_Assessment.docx" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+      <!-- M9: Professional Statement -->
+      <div class="proj-card reveal" style="grid-column:1/-1;">
+        <div class="proj-type">Professional Development</div>
+        <div class="proj-name">Professional Statement</div>
+        <p class="proj-desc">"I am an aspiring cybersecurity analyst with a strong interest in network and information security. I am committed to protecting sensitive data and digital systems, and I continuously enhance my technical skills through hands-on learning and practical experience. With core strengths in integrity, persistence, and a strong willingness to learn, I aim to help organizations safeguard their systems and mitigate threats from evolving cyber risks."</p>
+        <div class="proj-tools"><span class="proj-tool">Professional Branding</span><span class="proj-tool">Career Development</span></div>
+        <a href="https://github.com/Anshul-debug" class="proj-link" target="_blank">View on GitHub</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CERTS / RANKS -->
+<section id="certs" style="background:linear-gradient(180deg,transparent,rgba(155,127,212,0.025) 50%,transparent);">
+  <div class="section">
+    <div class="sec-head reveal">
+      <span class="sec-num">04</span><span class="sec-gem">◆</span>
+      <h2 class="sec-title">RANKS & HONOURS</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card reveal">
+        <div class="cert-stars" style="color:var(--gold)">★★★★★</div>
+        <div class="cert-rarity rarity-5">Obtained — Completed</div>
+        <div class="cert-name">Google Cybersecurity Specialization</div>
+        <div class="cert-org">Google · Coursera<br/>9-Course Certificate · 9 of 9 Complete<br/>All 9 Courses Completed ✓</div>
+      </div>
+      <div class="cert-card reveal d1">
+        <div class="cert-stars" style="color:var(--violet)">★★★★</div>
+        <div class="cert-rarity rarity-4">Obtained</div>
+        <div class="cert-name">Cybersecurity Certificate</div>
+        <div class="cert-org">RCPL<br/>India-based Skills Training Organisation<br/>Core cybersecurity concepts & practices</div>
+      </div>
+      <div class="cert-card reveal d2">
+        <div class="cert-stars" style="color:var(--azure)">★★★</div>
+        <div class="cert-rarity rarity-3">In Progress</div>
+        <div class="cert-name">TryHackMe — Free Labs</div>
+        <div class="cert-org">TryHackMe<br/>Blue Team & SOC Path<br/>Ongoing self-directed training</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-stars" style="color:var(--azure)">★★★</div>
+        <div class="cert-rarity rarity-3">Planned</div>
+        <div class="cert-name">CompTIA Security+</div>
+        <div class="cert-org">CompTIA · SY0-701<br/>Next certification target</div>
+      </div>
+      <div class="cert-card reveal d1">
+        <div class="cert-stars" style="color:var(--azure)">★★★</div>
+        <div class="cert-rarity rarity-3">Planned</div>
+        <div class="cert-name">Blue Team Level 1 (BTL1)</div>
+        <div class="cert-org">Security Blue Team<br/>Hands-on blue team certification</div>
+      </div>
+      <div class="cert-card reveal d2">
+        <div class="cert-stars" style="color:#6ee7b7">◈◈◈</div>
+        <div class="cert-rarity rarity-ex">Exploring</div>
+        <div class="cert-name">MSc Cybersecurity</div>
+        <div class="cert-org">Australia<br/>Researching programmes & pathways<br/>Long-term advancement goal</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:linear-gradient(180deg,transparent,rgba(79,195,247,0.025) 50%,transparent);">
+  <div class="section">
+    <div class="sec-head reveal">
+      <span class="sec-num">05</span><span class="sec-gem">◆</span>
+      <h2 class="sec-title">SEND DISPATCH</h2>
+      <div class="sec-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-head">
+          <h3>Open for Deployment</h3>
+          <p>Seeking entry-level cybersecurity roles, internships, and junior analyst positions. If you have a mission that needs a dedicated operative — reach out through any channel below.</p>
+        </div>
+        <div class="contact-links">
+          <a href="https://www.linkedin.com/in/anshul-mehta-19b3013a9/" class="c-link" target="_blank">💼 &nbsp;linkedin.com/in/anshul-mehta-19b3013a9</a>
+          <a href="https://github.com/Anshul-debug" class="c-link" target="_blank">💻 &nbsp;github.com/Anshul-debug</a>
+          <a href="mailto:anshbye1@gmail.com" class="c-link">📡 &nbsp;anshbye1@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-form reveal d1">
+        <div class="f-group"><label>Sender Name</label><input type="text" placeholder="Your name"/></div>
+        <div class="f-group"><label>Transmission ID</label><input type="email" placeholder="your@email.com"/></div>
+        <div class="f-group"><label>Subject</label><input type="text" placeholder="Mission briefing..."/></div>
+        <div class="f-group"><label>Message</label><textarea placeholder="Describe the opportunity..."></textarea></div>
+        <button class="btn-send" onclick="this.textContent='✦ Dispatch Sent ✦';this.style.background='linear-gradient(135deg,#6ee7b7,#34d399)';">✦ Transmit Message ✦</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 <span>Anshul Mehta</span> · Cyber Operative · Uttarakhand, India · All Systems Online</footer>
+
+<script>
+// Stars
+const starsEl = document.getElementById('stars');
+for(let i=0;i<200;i++){
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random()*1.8+0.4;
+  const dur = (Math.random()*4+2).toFixed(1);
+  const mn = (Math.random()*0.08+0.03).toFixed(2);
+  const mx = (Math.random()*0.55+0.15).toFixed(2);
+  s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--dur:${dur}s;--min:${mn};--max:${mx};animation-delay:${(Math.random()*6).toFixed(1)}s`;
+  starsEl.appendChild(s);
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Active nav
+const sections = document.querySelectorAll('section[id]');
+const navAs = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let cur='';
+  sections.forEach(s=>{ if(window.scrollY>=s.offsetTop-160) cur=s.id; });
+  navAs.forEach(a=>{
+    const on = a.getAttribute('href')===`#${cur}`;
+    a.classList.toggle('active',on);
+  });
+});
+</script>
+</body>
+</html>
